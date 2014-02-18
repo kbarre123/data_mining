@@ -1,2 +1,2 @@
 # Don't sync data sets
-*.csv
+/guide_to_data_mining/source_data
