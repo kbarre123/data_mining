@@ -81,6 +81,8 @@ def manhattan(rating1, rating2):
     """Computes the Manhattan distance. Both rating1 and rating2 are dictionaries
        of the form {'The Strokes': 3.0, 'Slightly Stoopid': 2.5}"""
     # Run this as: manhattan(users['Angelica'], users['Chan'])
+    # If data is dense (almost all attributes have non-zero values) and
+    # the magnitude of the attribute values is important, use this method.
     distance = 0
     total = 0
     for key in rating1:
@@ -94,8 +96,10 @@ def manhattan(rating1, rating2):
 
 
 def pearson(rating1, rating2):
-    """ Returns the Pearson rating b/t two objects """
+    """ Returns the Pearson rating b/t two objects"""
     # Run this as: pearson(users['Angelica'], users['Chan'])
+    # If data is prone to grade-inflation (different users may be using
+    # different scales), use this method.
     sum_xy = 0
     sum_x = 0
     sum_y = 0
@@ -112,12 +116,33 @@ def pearson(rating1, rating2):
             sum_y += y
             sum_x2 += pow(x, 2)
             sum_y2 += pow(y, 2)
-    # now compute denominator
     denominator = sqrt(sum_x2 - pow(sum_x, 2) / n) * sqrt(sum_y2 - pow(sum_y, 2) / n)
     if denominator == 0:
         return 0
     else:
         return (sum_xy - (sum_x * sum_y) / n) / denominator
+
+def cosineSimilarity(rating1, rating2):
+    """Returns the cosine similarity b/t two objects"""
+    # This is ran just as pearson is above.
+    # If data is sparse, use this method. It ignores the impact of null
+    # data points.
+    sum_xy = 0
+    sum_x2 = 0
+    sum_y2 = 0
+    for key in rating1:
+        if key in rating2:
+            x = rating1[key]
+            y = rating2[key]
+            sum_xy += x * y
+            sum_x2 += pow(x, 2)
+            sum_y2 += pow(y, 2)
+    denominator = sqrt(sum_x2) * sqrt(sum_y2)
+    if (denominator == 0):
+        return 0
+    else:
+        return sum_xy / denominator
+    
 
 def computeNearestNeighbor(username, users):
     """creates a sorted list of users based on their distance to username"""

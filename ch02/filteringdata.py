@@ -61,6 +61,18 @@ def recommend(username, users):
     # using the fn sorted for variety - sort is more efficient
     return sorted(recommendations, key=lambda artistTuple: artistTuple[1], reverse = True)
 
+def minkowski(rating1, rating2, r):
+    """Computes the Minkowski distance."""
+    distance = 0
+    commonRatings = False
+    for key in rating1:
+        if key in rating2:
+            distance += pow(abs(rating1[key] - rating2[key]), r)
+            commonRatings = True
+        if commonRatings:
+            return pow(distance, 1/r)
+        else:
+            return 0 #Indicates no ratings in common
 
 # examples - uncomment to run
 
